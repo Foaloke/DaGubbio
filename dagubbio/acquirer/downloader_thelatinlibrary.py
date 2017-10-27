@@ -7,7 +7,7 @@ Created on 15 Aug 2017
 import collections
 from bs4 import BeautifulSoup
 import urllib
-import dagubbio.utils.sourceutils as su
+import utils.sourceutils as su
 import lxml.html as html
 from lxml import etree
 from lxml.html.clean import Cleaner
@@ -26,7 +26,6 @@ class Downloader_LatinLibrary(object):
     
     def download(self):
         raw_html = requests.get(self.url).content
-        text_urls = []
         for option in self.get_main_options(raw_html):
             self.depth_text_search(self.url+option)
 
@@ -59,14 +58,13 @@ class Downloader_LatinLibrary(object):
             self.depth_text_search(next_page_url+link.decode('utf-8'))
 
         if len(links) == 0:
-            print("INFO: Saving "+page_url)
             su.save_source(self.storage_folder, self.name_file(page_url), tidied_html)
 
 
     def tidy_html(self, raw_html, page_url=''):
         corrected_html = html.tostring(html.fromstring(raw_html), encoding='utf-8').decode('utf-8', 'ignore')
         corrected_html = self.remove_empty_attributes(corrected_html)
-        document, errors = tidy_document(corrected_html, options={"doctype": 'omit', "output-xhtml": 0, "tidy-mark": 0, "char-encoding": "utf8"})  
+        document, _ = tidy_document(corrected_html, options={"doctype": 'omit', "output-xhtml": 0, "tidy-mark": 0, "char-encoding": "utf8"})  
         document = self.keep_relevant_tags(document)
         document = self.remove_footer(document, page_url)
         document = self.remove_self_refs(document)

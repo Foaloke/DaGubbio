@@ -8,7 +8,7 @@ import dagubbio.writer.distortions as d
 import urllib
 import os
 import random
-import dagubbio.utils.sourceutils as su
+import utils.sourceutils as su
 from PIL import ImageOps
 from PIL import ImageFont
 from PIL import Image
@@ -27,11 +27,9 @@ class Writer(object):
         self.font_output_folder = font_output_folder
         self.text_output_folder = text_output_folder
     
-    
     def write_from_file(self, source_dir, source_path):
         su.prepare_directory(self.text_output_folder)
         self.create_text_strip(source_path, su.load_source(source_dir, source_path))
-    
     
     def create_text_strip(self, title, text):
         
@@ -53,19 +51,20 @@ class Writer(object):
             x_offset = 0
             for c_f in self.create_font_sequence(text):
                 if c_f[0] == ' ':
-                    print("---")
                     x_offset += int((self.white_space_spacing*0.5)+self.white_space_spacing*(random.randrange(25, 75, 1)*0.01))
                 else:
-                    print(c_f[0]+" - "+c_f[1].name)
                     font = ImageFont.truetype(c_f[1].path,c_f[1].size)
                     draw.text((x_offset,self.padding_top+c_f[1].offset),c_f[0],(0,0,0),font=font)
                     next_offset = ImageOps.invert(canvas).getbbox()[2]
                     x_offset = next_offset - 3
             
-            print("INFO: Writing to "+output_path)
+            print("INFO: Writing {} to {}".format((text[:25] + '..') if len(text) > 75 else text, output_path))
             distorted = d.SineWarp(self.warp_amplitude, self.warp_period).render(canvas)
             bbox = ImageOps.invert(distorted).getbbox()
-            distorted.crop(bbox).save(output_path+'.png')
+            file_name = output_path+'.png'
+            img = distorted.crop(bbox)
+            img.save(file_name)
+            return file_name
     
     def create_font_sequence(self, text):
         font_sequence = []

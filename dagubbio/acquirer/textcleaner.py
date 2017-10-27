@@ -7,7 +7,7 @@ Created on 15 Aug 2017
 import os
 import re
 from bs4 import BeautifulSoup
-import dagubbio.utils.sourceutils as su
+import utils.sourceutils as su
 
 class TextCleaner(object):
 
@@ -27,10 +27,6 @@ class TextCleaner(object):
     
     
     def clean_text_from_html_file_at(self, html_file_dir, html_file_name):
-
-        if "albertofaix%2Fhist12" in html_file_name:
-            print("GOT YOU!")
-        print("INFO: Extracting "+os.path.join(html_file_dir, html_file_name))
         html_text = su.load_source(html_file_dir, html_file_name)
         return self.clean_text_from_html_file(html_text)
     

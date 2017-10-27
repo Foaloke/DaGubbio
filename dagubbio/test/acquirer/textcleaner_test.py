@@ -5,8 +5,8 @@ Created on 15 Aug 2017
 '''
 
 import unittest
-import dagubbio.utils.config as cfg
-import dagubbio.utils.sourceutils as su
+import utils.config as cfg
+import utils.sourceutils as su
 import dagubbio.acquirer.textcleaner as tc
 
 class TextCleaner_Text(unittest.TestCase):

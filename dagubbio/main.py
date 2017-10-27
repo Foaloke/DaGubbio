@@ -5,8 +5,8 @@ Created on 16 Aug 2017
 '''
 
 import os
-import dagubbio.utils.sourceutils as su
-import dagubbio.utils.config as cfg
+import utils.sourceutils as su
+import utils.config as cfg
 import dagubbio.acquirer.downloader_thelatinlibrary as latin_library
 import dagubbio.acquirer.textcleaner as text_cleaner
 import dagubbio.writer.writer as writer
@@ -36,9 +36,5 @@ for font_name,font_data in cfg_fonts.items():
     font_path = os.path.join(font_directory, font_name+'.'+font_data_split[0])
     fonts[font_name] = font.FontInfo(font_name, font_path, int(font_data_split[1]), int(font_data_split[2]))
 
-def tuple(values):
-    pair = values.split(',')
-    return (float(pair[0]), float(pair[1]))
-
-wrt = writer.Writer(fonts, int(cfg_writer['white_space_spacing']),  int(cfg_writer['padding_top']),  int(cfg_writer['spacing_correction']),  tuple(cfg_writer['warp_amplitude']),  tuple(cfg_writer['warp_period']), cfg_writer['font_output_folder'], cfg_writer['text_output_folder'])
+wrt = writer.Writer(fonts, int(cfg_writer['white_space_spacing']),  int(cfg_writer['padding_top']),  int(cfg_writer['spacing_correction']),  cfg.tuple(cfg_writer['warp_amplitude']),  cfg.tuple(cfg_writer['warp_period']), cfg_writer['font_output_folder'], cfg_writer['text_output_folder'])
 wrt.write_from_file('texts', 'http%3A%2F%2Fwww.thelatinlibrary.com%2F12tables.html.html')

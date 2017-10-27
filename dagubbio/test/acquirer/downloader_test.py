@@ -6,9 +6,9 @@ Created on 15 Aug 2017
 
 import unittest
 
-import dagubbio.utils.config as cfg
+import utils.config as cfg
 import dagubbio.acquirer.downloader_thelatinlibrary as dl
-import dagubbio.utils.sourceutils as su
+import utils.sourceutils as su
 
 class TestDownloader(unittest.TestCase):
 
