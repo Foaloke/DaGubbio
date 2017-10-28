@@ -55,8 +55,11 @@ class Writer(object):
                 else:
                     font = ImageFont.truetype(c_f[1].path,c_f[1].size)
                     draw.text((x_offset,self.padding_top+c_f[1].offset),c_f[0],(0,0,0),font=font)
-                    next_offset = ImageOps.invert(canvas).getbbox()[2]
-                    x_offset = next_offset - 3
+                    try:
+                        next_offset = ImageOps.invert(canvas).getbbox()[2]
+                        x_offset = next_offset - 3
+                    except TypeError:
+                        print "Invalid sequence [{}]".word
             
             print("INFO: Writing {} to {}".format((text[:25] + '..') if len(text) > 75 else text, output_path))
             distorted = d.SineWarp(self.warp_amplitude, self.warp_period).render(canvas)
